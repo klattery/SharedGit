@@ -17,24 +17,11 @@ functions{
                   int[] start, int[] end,
                   int[] task_individual
   ) {
-    real ll=0; // Log Likelihood to accumulate
-    real util_alt; // Utility of alternative (was ab)
-    real denom; // sum of e^util_alt
-    real util_alty; // Utility of alterative * dep, cumulated
-   
-    for (t in a_beg:a_end){ 
-      denom=0;
-      util_alty=0;
-      for (n in start[t]:end[t]){
-          util_alt = X[n] * col(beta_ind,task_individual[t]);
-          denom += exp(util_alt);
-         
-          if(dep[n]>0){
-            util_alty += util_alt * dep[n];
-          }
+    real ll = 0; 
+    for (t in a_beg:a_end){
+        ll+= dot_product(dep[start[t]:end[t]],
+             log_softmax(X[start[t]:end[t]] * col(beta_ind,task_individual[t])));  
       }
-      ll+=(util_alty-log(denom));
-    }
     return ll;
   }
   
