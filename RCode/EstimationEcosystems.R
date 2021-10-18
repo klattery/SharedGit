@@ -735,6 +735,63 @@ env_eb$best_x_fromy <- function(x, y) {
 }
 
 ###############  General Prep ###############
+env_eb$prep_file_stan <- function(idtaskdep, indcode_list, train = TRUE, other_data = NULL) {
+  sort_order <- order(idtaskdep[, 1], idtaskdep[, 2])
+  sort_order[!train] <- 0 # Non-training gets order = 0, which removes
+  ind <- as.matrix(indcode_list$indcode[sort_order,])
+  
+  dep <- as.vector(as.matrix(idtaskdep[sort_order, 3]))
+  idtask <- data.frame(idtaskdep[sort_order, 1:2])
+  idtask_u <- as.matrix(unique(idtask))
+  idtask_r <- (match(data.frame(t(idtask)), data.frame(t(idtask_u)))) # unique tasks
+  resp_id <- as.vector(unique(idtask_u[, 1]))
+  match_id <- match(idtask[, 1], as.matrix(resp_id))
+  # Next 3 lines recodes dep to sum to 1
+  depsum <- rowsum(dep, idtask_r) # Sum dep each task
+  depsum_match <- (depsum[idtask_r,]) # Map Sum to rows
+  dep <- dep / depsum_match # sum of dep will add to 1
+  # Recode NAs to 0
+  ind[is.na(ind)] <- 0
+  dep[is.na(dep)] <- 0
+  wts <- rep(1, length(dep)) # initial weights are 1
+  
+  # Add Stan stuff
+  end <- c(which(diff(idtask_r)!=0), length(idtask_r))
+  start <- c(1, end[-length(end)]+1)
+  # Return list of data (depends on whether other data was also chosen)
+  if (!is.null(other_data)){
+    return(list(tag = 0, N = nrow(ind), P = ncol(ind), T = max(idtask_r), I = length(resp_id),
+                dep = dep, ind = ind, idtask = idtask, idtask_r = idtask_r, resp_id = resp_id, match_id = match_id,
+                task_individual = match_id[start],
+                start = start,
+                end = end,
+                prior_cov = indcode_list$indprior,
+                code_master = indcode_list$code_master,
+                df = 2,
+                prior_alpha = rep(0, ncol(ind)),
+                a_sig = 10,
+                cov_block = matrix(1, ncol(ind), ncol(ind)),
+                adapt_delta = .8,
+                wts = wts,
+                other_data = as.matrix(other_data)[sort_order,])) # Only Added item in list vs below
+  } else {
+    return(list(tag = 0, N = nrow(ind), P = ncol(ind), T = max(idtask_r), I = length(resp_id),
+                dep = dep, ind = ind, idtask = idtask, idtask_r = idtask_r, resp_id = resp_id, match_id = match_id,
+                task_individual = match_id[start],
+                start = start,
+                end = end,
+                prior_cov = indcode_list$indprior,
+                code_master = indcode_list$code_master,
+                df = 2,
+                prior_alpha = rep(0, ncol(ind)),
+                a_sig = 10,
+                cov_block = matrix(1, ncol(ind), ncol(ind)),
+                adapt_delta = .8,
+                wts = wts))
+  }  
+}
+
+                          
 env_eb$prep_file <- function(idtaskdep, indcode_list, train = TRUE, other_data = NULL) {
   sort_order <- order(idtaskdep[, 1], idtaskdep[, 2])
   sort_order[!train] <- 0 # Non-training gets order = 0, which removes
