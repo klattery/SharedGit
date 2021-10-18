@@ -1,8 +1,7 @@
 outname <- paste0(out_prefix, "_StanOut_", 
                   format(Sys.time(), '%Y%m%d-%H%M%S')) # edit as desired
 message("ESTIMATING...")
-message("Optional lines to run in terminal to check progress:\n")
-message(paste0(
+message(paste0("Optional lines to run in terminal to check progress:\n",
     "cd ", dir_work, "   # Change to your working directory and then:\n",
     "  awk 'END { print NR - 45 } ' '",outname,"-1.csv'", "                # Count lines in output\n",
     "  tail -n +45 '",outname,"-1.csv'  | cut -d, -f 1-300 > temp.csv", "  # Create temp.csv with first 300 columns\n"))
