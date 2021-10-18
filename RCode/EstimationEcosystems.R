@@ -206,7 +206,7 @@ env_code$make_codefiles <- function(indcode_list){
   result$indprior <- get_prior(indcode_list) # of levels effect
   colnames(result$code_master) <- colnames(result$indcode) # CHECK code_master
   message("Code master file has the following coded parameters:")
-  print(colnames(indcode_list$code_master))                                        
+  print(colnames(result$code_master))                                        
   return(result)
 }
 
