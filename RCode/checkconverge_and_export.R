@@ -48,10 +48,16 @@ for (chain_i in (1:nchains)){
   matplot(1:nrow(draws_beta_mu[[chain_i]]), draws_beta_mu[[chain_i]],
           type = "l" , lty = 1, lwd = 1, main = paste0("Chain ", chain_i), xlab = "Iteration", ylab = "Mean Beta")   
 } 
-chain_cols <- c("red","blue","green","black")
+
 pdf(file = file.path(dir_work, pdf_name),   # The directory you want to save the file in
     width = 7, # The width of the plot in inches
     height = 5) # The height of the plot in inches
+hist(do.call(rbind,draws_beta$post_warmup_sampler_diagnostics)$accept_stat__, breaks = 30, main = "Acceptance Rate - Sampling", xlab = "", xlim = c(0,1))
+for (chain_i in (1:nchains)){
+  matplot(1:nrow(draws_beta_mu[[chain_i]]), draws_beta_mu[[chain_i]],
+          type = "l" , lty = 1, lwd = 1, main = paste0("Chain ", chain_i), xlab = "Iteration", ylab = "Mean Beta")   
+}  
+chain_cols <- c("red","blue","green","black")
 for (i in 1:ncol(draws_beta_mu[[1]])){
   x <- sapply(1:length(draws_beta_mu), function(chain){
     draws_beta_mu[[chain]][,i]     
