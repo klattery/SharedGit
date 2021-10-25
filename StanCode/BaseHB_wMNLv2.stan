@@ -98,6 +98,7 @@ data {
   vector[P] con_sign; // Sign of constraints -1, +1 or 0
   vector[N] wts; // weights of each row
   matrix[P,P] cov_block; // Specifies blocks of covariance items
+  real<lower = 0> prior_cov_scale;  // Typically 1 
   
   // Ragged array matching, For each task in 1:T, Specify:
   int<lower = 1, upper = I> task_individual[T]; // which i in 1:I does task
@@ -109,7 +110,7 @@ data {
 
 transformed data{
   vector[N] dep_wt = dep .* wts;
-  matrix[P,P] L = cholesky_decompose(prior_cov/(P + df)); // For Wishart
+  matrix[P,P] L = cholesky_decompose(prior_cov_scale * prior_cov/(P + df)); // For Wishart
   real df_chi[P];
   int tri_n = tri_sum(cov_block); // # of lower tri elements 
   int tri_pos[tri_n,2] = get_pos(cov_block, tri_n); // position of elements
