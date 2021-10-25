@@ -775,7 +775,7 @@ env_eb$prep_file_stan <- function(idtaskdep, indcode_list, train = TRUE, other_d
                 cov_block = matrix(1, ncol(ind), ncol(ind)),
                 prior_cov_scale = 1,
                 P_cov = 0,
-                i_cov = matrix(0, nrow(ind), 0),
+                i_cov = matrix(0, length(resp_id), 0),
                 adapt_delta = .8,
                 wts = wts,
                 other_data = as.matrix(other_data)[sort_order,])) # Only Added item in list vs below
@@ -793,7 +793,7 @@ env_eb$prep_file_stan <- function(idtaskdep, indcode_list, train = TRUE, other_d
                 cov_block = matrix(1, ncol(ind), ncol(ind)),
                 prior_cov_scale = 1,
                 P_cov = 0,
-                i_cov = matrix(0, nrow(ind), 0),
+                i_cov = matrix(0, length(resp_id), 0),
                 adapt_delta = .8,
                 wts = wts))
   }  
