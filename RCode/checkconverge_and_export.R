@@ -11,7 +11,7 @@ util_name <- paste0(out_prefix,"_utilities_r.csv")
 pdf_name <- paste0(out_prefix,"_trace_plots.pdf")
 fit_name <-  paste0(out_prefix,"_fit_stats.csv")
 message(paste0(
-  "Saving post warm-up files for:\n",
+  "\nSaving post warm-up files for:\n",
   " respondent point estimates:    ", util_name,"\n",  
   " draws of utilities as R list:  ", draws_name,"\n",
   " convergence stats of mean:     ", fit_name, "\n",
