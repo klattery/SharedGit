@@ -17,8 +17,6 @@ HB_model$sample(modifyList(data_stan, data_model),
                 threads_per_chain = threads[[3]],
                 save_warmup = TRUE,
                 refresh = data_model$refresh,
-                seed = 271,
-                init = .1,
                 adapt_delta = data_stan$adapt_delta,
                 show_messages = FALSE,
                 validate_csv = FALSE
