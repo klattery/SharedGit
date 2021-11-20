@@ -198,8 +198,7 @@ env_code$get_prior <- function(indcode_list){
 }
 
 env_code$make_codefiles <- function(indcode_list){
-  # Makes global vars:
-  # code_master, indcode, indprior
+  # Makes vars: # code_master, indcode, indprior
   result <- list()
   result$indcode <- do.call(cbind, lapply(indcode_list, function(x) x$outcode)) # coded variables 
   result$code_master <- back_code(indcode_list)
