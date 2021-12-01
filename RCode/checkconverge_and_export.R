@@ -1,3 +1,6 @@
+# Parameters:
+# nchains, outname, dir_output, dir_work, out_prefix, data_stan
+
 ### Read results from csv into R ###
 cat("Reading draws from Stan csv output into R (large files take time)...")
 nchains <- threads[[1]]
